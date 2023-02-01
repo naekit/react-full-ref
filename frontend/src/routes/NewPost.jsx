@@ -1,54 +1,47 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Form, Link, redirect } from "react-router-dom"
 import Modal from "../components/Modal"
 import classes from "./NewPost.module.css"
 
-function NewPost({ onAdd }) {
-	const [enteredText, setEnteredText] = useState("")
-	const [enteredName, setEnteredName] = useState("")
-
-	const bodyHandler = (event) => {
-		setEnteredText(event.target.value)
-	}
-
-	const submitHandler = (event) => {
-		event.preventDefault()
-		onAdd({
-			body: enteredText,
-			author: enteredName,
-			id: Math.random().toString(36).substr(2, 9),
-		})
-		onCancel()
-	}
-
+function NewPost() {
 	return (
 		<Modal>
-			<form onSubmit={submitHandler} className={classes.form}>
+			<Form method="post" className={classes.form}>
 				<p>
 					<label htmlFor="body">Text</label>
-					<textarea
-						id="body"
-						required
-						rows={3}
-						onChange={bodyHandler}
-					/>
+					<textarea id="body" required rows={3} name="body" />
 				</p>
 				<p>
-					<label htmlFor="name">Your name</label>
-					<input
-						type="text"
-						id="name"
-						onChange={(e) => setEnteredName(e.target.value)}
-						required
-					/>
+					<label htmlFor="author">Your name</label>
+					<input type="text" id="author" required name="author" />
 				</p>
 				<p className={classes.actions}>
 					<Link to="/">Cancel</Link>
 					<button type="submit">Submit</button>
 				</p>
-			</form>
+			</Form>
 		</Modal>
 	)
 }
 
 export default NewPost
+
+export const postAction = async ({ request }) => {
+	const formData = await request.formData()
+
+	const data = {
+		body: formData.get("body"),
+		author: formData.get("author"),
+		id: Math.random().toString(36).substr(2, 9),
+	}
+
+	const res = await fetch("http://localhost:8080/posts", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(data),
+	})
+	const post = await res.json()
+
+	return redirect("/")
+}
