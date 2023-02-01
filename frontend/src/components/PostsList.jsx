@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react"
-import Modal from "./Modal"
-import NewPost from "./NewPost"
 import Post from "./Post"
 import styles from "./PostsList.module.css"
 
-const PostsList = ({ isVisible, onStopPost }) => {
+const PostsList = () => {
 	const [posts, setPosts] = useState([])
+	const [isLoading, setIsLoading] = useState(false)
 
 	const addPost = (post) => {
 		fetch("http://localhost:8080/posts", {
@@ -20,9 +19,11 @@ const PostsList = ({ isVisible, onStopPost }) => {
 
 	useEffect(() => {
 		const fetchPosts = async () => {
+			setIsLoading(true)
 			const res = await fetch("http://localhost:8080/posts")
 			const data = await res.json()
 			setPosts(data.posts)
+			setIsLoading(false)
 		}
 		return () => {
 			fetchPosts()
@@ -31,12 +32,9 @@ const PostsList = ({ isVisible, onStopPost }) => {
 
 	return (
 		<>
-			{isVisible && (
-				<Modal hideHandler={onStopPost}>
-					<NewPost onAdd={addPost} onCancel={onStopPost} />
-				</Modal>
-			)}
-			{posts.length === 0 ? (
+			{isLoading ? (
+				<p className={styles.posts}>...Loading</p>
+			) : posts.length === 0 ? (
 				<p className={styles.posts}>No posts yet! Try adding some :)</p>
 			) : (
 				<ul className={styles.posts}>
