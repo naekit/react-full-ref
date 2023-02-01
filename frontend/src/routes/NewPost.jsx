@@ -31,7 +31,6 @@ export const postAction = async ({ request }) => {
 	const data = {
 		body: formData.get("body"),
 		author: formData.get("author"),
-		id: Math.random().toString(36).substr(2, 9),
 	}
 
 	const res = await fetch("http://localhost:8080/posts", {
