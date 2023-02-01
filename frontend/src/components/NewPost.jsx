@@ -1,7 +1,7 @@
 import { useState } from "react"
 import classes from "./NewPost.module.css"
 
-function NewPost({ onAdd }) {
+function NewPost({ onAdd, onCancel }) {
 	const [enteredText, setEnteredText] = useState("")
 	const [enteredName, setEnteredName] = useState("")
 
@@ -16,6 +16,7 @@ function NewPost({ onAdd }) {
 			author: enteredName,
 			id: Math.random().toString(36).substr(2, 9),
 		})
+		onCancel()
 	}
 
 	return (
@@ -32,6 +33,12 @@ function NewPost({ onAdd }) {
 					onChange={(e) => setEnteredName(e.target.value)}
 					required
 				/>
+			</p>
+			<p className={classes.actions}>
+				<button type="button" onClick={onCancel}>
+					Cancel
+				</button>
+				<button type="submit">Submit</button>
 			</p>
 		</form>
 	)

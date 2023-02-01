@@ -7,7 +7,7 @@ import styles from "./PostsList.module.css"
 const PostsList = ({ isVisible, onStopPost }) => {
 	const [posts, setPosts] = useState([
 		{ id: 4, author: "Ikaros", body: "Vite is easy!" },
-		{ id: 5, author: "Ikaros", body: "Vite is easy!" },
+		{ id: 5, author: "Niko", body: "React is easier!" },
 	])
 
 	const addPost = (post) => {
@@ -18,7 +18,7 @@ const PostsList = ({ isVisible, onStopPost }) => {
 		<>
 			{isVisible && (
 				<Modal hideHandler={onStopPost}>
-					<NewPost onAdd={addPost} />
+					<NewPost onAdd={addPost} onCancel={onStopPost} />
 				</Modal>
 			)}
 			<ul className={styles.posts}>
