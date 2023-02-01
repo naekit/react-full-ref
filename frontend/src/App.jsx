@@ -3,7 +3,7 @@ import MainHeader from "./components/MainHeader"
 import PostsList from "./components/PostsList"
 
 function App() {
-	const [showModal, setShowModal] = useState(true)
+	const [showModal, setShowModal] = useState(false)
 
 	const toggleHandler = () => {
 		setShowModal((prevState) => !prevState)

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Modal from "./Modal"
 import NewPost from "./NewPost"
 import Post from "./Post"
@@ -8,8 +8,26 @@ const PostsList = ({ isVisible, onStopPost }) => {
 	const [posts, setPosts] = useState([])
 
 	const addPost = (post) => {
+		fetch("http://localhost:8080/posts", {
+			method: "POST",
+			body: JSON.stringify(post),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		})
 		setPosts((prevState) => [post, ...prevState])
 	}
+
+	useEffect(() => {
+		const fetchPosts = async () => {
+			const res = await fetch("http://localhost:8080/posts")
+			const data = await res.json()
+			setPosts(data.posts)
+		}
+		return () => {
+			fetchPosts()
+		}
+	}, [])
 
 	return (
 		<>
