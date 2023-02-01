@@ -22,6 +22,9 @@ const router = createBrowserRouter([
 						element: <NewPost />,
 						action: postAction,
 					},
+					{
+						path: "/:id",
+					},
 				],
 			},
 		],
