@@ -5,13 +5,10 @@ import Post from "./Post"
 import styles from "./PostsList.module.css"
 
 const PostsList = ({ isVisible, onStopPost }) => {
-	const [posts, setPosts] = useState([
-		{ id: 4, author: "Ikaros", body: "Vite is easy!" },
-		{ id: 5, author: "Niko", body: "React is easier!" },
-	])
+	const [posts, setPosts] = useState([])
 
 	const addPost = (post) => {
-		setPosts([post, ...posts])
+		setPosts((prevState) => [post, ...prevState])
 	}
 
 	return (
@@ -21,11 +18,15 @@ const PostsList = ({ isVisible, onStopPost }) => {
 					<NewPost onAdd={addPost} onCancel={onStopPost} />
 				</Modal>
 			)}
-			<ul className={styles.posts}>
-				{posts.map((post) => (
-					<Post key={post.id} {...post} />
-				))}
-			</ul>
+			{posts.length === 0 ? (
+				<p className={styles.posts}>No posts yet! Try adding some :)</p>
+			) : (
+				<ul className={styles.posts}>
+					{posts.map((post) => (
+						<Post key={post.id} {...post} />
+					))}
+				</ul>
+			)}
 		</>
 	)
 }
