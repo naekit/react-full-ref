@@ -1,7 +1,14 @@
 import React from "react"
+import { useNavigate } from "react-router-dom"
 import styles from "./Modal.module.css"
 
-const Modal = ({ children, hideHandler }) => {
+const Modal = ({ children }) => {
+	const navigate = useNavigate()
+
+	const hideHandler = () => {
+		navigate("..")
+	}
+
 	return (
 		<>
 			<div className={styles.backdrop} onClick={hideHandler} />
